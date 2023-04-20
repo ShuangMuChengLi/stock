@@ -24,10 +24,13 @@ app.use(express.static('E:\\main\\2.0\\dist'));
 // app.use(express.static(path.resolve(__dirname, 'dist')));
 
 app.use('/data', indexRouter);
-app.use("/v5",function (req,res) {
+app.use("/v5",function (req,res, next) {
   proxy.web(req, res, {
     target: 'https://stock.xueqiu.com/v5',
     changeOrigin: true
+  });
+  proxy.on('error', function(e) {
+    next(e);
   });
 });
 // catch 404 and forward to error handler
